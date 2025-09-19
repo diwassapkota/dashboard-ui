@@ -9,8 +9,9 @@ import { Settings } from './features/settings/settings';
 import { Login } from './auth/login/login';
 
 const routes: Routes = [
+  { path: 'login', component: Login },
   {
-    path: '',
+    path: 'app',
     component: Layout,
     children: [
       { path: 'dashboard', component: Dashboard },
@@ -21,8 +22,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-  { path: 'login', component: Login },
-  { path: '**', redirectTo: 'dashboard' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

@@ -27,7 +27,7 @@ export class Login implements OnInit {
     if (this.loginForm.valid) {
       // For now, just navigate to the dashboard on successful login.
       // In a real app, you would have authentication logic here.
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/app/dashboard']);
     }
   }
 }
