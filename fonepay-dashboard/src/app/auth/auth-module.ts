@@ -9,13 +9,13 @@ import { Register } from './register/register';
 
 @NgModule({
   declarations: [
-    Login,
-    Register
+    Login
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Register
   ]
 })
 export class AuthModule { }

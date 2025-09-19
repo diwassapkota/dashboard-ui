@@ -8,12 +8,12 @@ import { LoadingSpinner } from './components/loading-spinner/loading-spinner';
 @NgModule({
   declarations: [
     Layout,
-    Header,
-    LoadingSpinner
+    Header
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    LoadingSpinner
   ],
   exports: [
     Layout,
