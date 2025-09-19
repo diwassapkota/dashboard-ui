@@ -11,6 +11,14 @@
                                     class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border border-[#e7d0d1] bg-[#fcf8f8] focus:border-[#e7d0d1] h-14 placeholder:text-[#994d51] p-[15px] text-base font-normal leading-normal"
                                     formControlName="email"
                             />
+                            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-red-500 text-sm mt-1">
+                                <div *ngIf="loginForm.get('email')?.errors?.['required']">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="loginForm.get('email')?.errors?.['email']">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
                         </label>
                     </div>
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
@@ -21,6 +29,11 @@
                                     class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border border-[#e7d0d1] bg-[#fcf8f8] focus:border-[#e7d0d1] h-14 placeholder:text-[#994d51] p-[15px] text-base font-normal leading-normal"
                                     formControlName="password"
                             />
+                            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-red-500 text-sm mt-1">
+                                <div *ngIf="loginForm.get('password')?.errors?.['required']">
+                                    Password is required.
+                                </div>
+                            </div>
                         </label>
                     </div>
                     <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">Forgot Password?</p>
