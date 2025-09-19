@@ -4,13 +4,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
-  standalone: false
+  selector: 'app-register',
+  templateUrl: './register.html',
+  styleUrls: ['./register.scss']
 })
-export class Login implements OnInit {
-  loginForm!: FormGroup;
+export class Register implements OnInit {
+  registerForm!: FormGroup;
   error: string | null = null;
 
   constructor(
@@ -20,21 +19,23 @@ export class Login implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
+    this.registerForm = this.fb.group({
+      name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      role: ['ROLE_USER']
     });
   }
 
-  login(): void {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
+  register(): void {
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
           this.authService.setToken(response.token);
           this.router.navigate(['/app/dashboard']);
         },
         error: (err) => {
-          this.error = 'Invalid email or password';
+          this.error = 'Failed to register';
           console.error(err);
         }
       });

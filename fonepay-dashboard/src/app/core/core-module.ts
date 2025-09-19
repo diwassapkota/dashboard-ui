@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Layout } from './components/layout/layout';
 import { Header } from './components/header/header';
+import { LoadingSpinner } from './components/loading-spinner/loading-spinner';
 
 @NgModule({
   declarations: [
     Layout,
-    Header
+    Header,
+    LoadingSpinner
   ],
   imports: [
     CommonModule,
@@ -15,7 +17,8 @@ import { Header } from './components/header/header';
   ],
   exports: [
     Layout,
-    Header
+    Header,
+    LoadingSpinner
   ]
 })
 export class CoreModule { }

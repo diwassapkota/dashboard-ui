@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,6 +7,19 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  metrics: any = {};
 
+  constructor(private dashboardService: DashboardService) { }
+
+  ngOnInit(): void {
+    this.dashboardService.getMetrics().subscribe({
+      next: (data) => {
+        this.metrics = data;
+      },
+      error: (err) => {
+        console.error('Failed to get dashboard metrics', err);
+      }
+    });
+  }
 }

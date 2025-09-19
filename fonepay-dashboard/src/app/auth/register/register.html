@@ -1,10 +1,24 @@
 <div class="relative flex h-auto min-h-screen w-full flex-col bg-[#fcf8f8] group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
     <div class="layout-container flex h-full grow flex-col">
         <div class="px-40 flex flex-1 justify-center py-5">
-            <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+            <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-6">
                 <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
-                    <h2 class="text-[#1b0e0e] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Welcome to Fonepay</h2>
+                    <h2 class="text-[#1b0e0e] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Create an Account</h2>
                     <div *ngIf="error" class="text-red-500 text-sm mt-1 text-center">{{ error }}</div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <input
+                                    placeholder="Name"
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border border-[#e7d0d1] bg-[#fcf8f8] focus:border-[#e7d0d1] h-14 placeholder:text-[#994d51] p-[15px] text-base font-normal leading-normal"
+                                    formControlName="name"
+                            />
+                            <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)" class="text-red-500 text-sm mt-1">
+                                <div *ngIf="registerForm.get('name')?.errors?.['required']">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <input
@@ -12,11 +26,11 @@
                                     class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border border-[#e7d0d1] bg-[#fcf8f8] focus:border-[#e7d0d1] h-14 placeholder:text-[#994d51] p-[15px] text-base font-normal leading-normal"
                                     formControlName="email"
                             />
-                            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-red-500 text-sm mt-1">
-                                <div *ngIf="loginForm.get('email')?.errors?.['required']">
+                            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-red-500 text-sm mt-1">
+                                <div *ngIf="registerForm.get('email')?.errors?.['required']">
                                     Email is required.
                                 </div>
-                                <div *ngIf="loginForm.get('email')?.errors?.['email']">
+                                <div *ngIf="registerForm.get('email')?.errors?.['email']">
                                     Please enter a valid email address.
                                 </div>
                             </div>
@@ -30,25 +44,23 @@
                                     class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border border-[#e7d0d1] bg-[#fcf8f8] focus:border-[#e7d0d1] h-14 placeholder:text-[#994d51] p-[15px] text-base font-normal leading-normal"
                                     formControlName="password"
                             />
-                            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-red-500 text-sm mt-1">
-                                <div *ngIf="loginForm.get('password')?.errors?.['required']">
+                            <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-red-500 text-sm mt-1">
+                                <div *ngIf="registerForm.get('password')?.errors?.['required']">
                                     Password is required.
                                 </div>
                             </div>
                         </label>
                     </div>
-                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">Forgot Password?</p>
                     <div class="flex px-4 py-3">
                         <button
                                 type="submit"
-                                [disabled]="loginForm.invalid"
+                                [disabled]="registerForm.invalid"
                                 class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-[#ea2a33] text-[#fcf8f8] text-base font-bold leading-normal tracking-[0.015em]"
                         >
-                            <span class="truncate">Login</span>
+                            <span class="truncate">Register</span>
                         </button>
                     </div>
-
-                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline">Don't have an account? Sign up</p>
+                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline"><a routerLink="/login">Already have an account? Login</a></p>
                 </div>
             </form>
         </div>
