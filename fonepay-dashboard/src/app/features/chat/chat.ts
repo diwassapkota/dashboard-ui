@@ -94,7 +94,7 @@ export class Chat implements OnInit, AfterViewChecked {
           if (event.type === 'conversationId') {
             this.selectedConversation.id = event.data;
           } else if (event.type === 'message') {
-            aiMessage.message += event.data;
+            aiMessage.message += event.data + ' ';
           }
         },
         error: (err) => {

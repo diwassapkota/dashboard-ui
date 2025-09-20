@@ -15,18 +15,7 @@ export class ChatService {
   ) { }
 
   getConversations(): Observable<any> {
-    // Assuming an endpoint to get all conversations
-    // This might need to be created in the backend.
-    // Returning a mock for now.
-    return new Observable(observer => {
-      observer.next([
-        { id: 1, title: 'Customer Support' },
-        { id: 2, title: 'Technical Issues' },
-        { id: 3, title: 'Billing Inquiries' }
-      ]);
-      observer.complete();
-    });
-    // return this.apiService.get('/chat/conversations');
+    return this.apiService.get('/chat/history');
   }
 
   getConversationHistory(conversationId: number): Observable<any> {
@@ -61,7 +50,7 @@ export class ChatService {
             console.log('SSE Chunk Received:', chunk);
             buffer += chunk;
 
-            let boundary = buffer.lastIndexOf('\\n\\n');
+            let boundary = buffer.lastIndexOf('\n\n');
             if (boundary !== -1) {
               const completeMessages = buffer.substring(0, boundary);
               this.processBuffer(completeMessages, observer);
@@ -79,7 +68,7 @@ export class ChatService {
   }
 
   private processBuffer(buffer: string, observer: any) {
-    const messages = buffer.split('\\n\\n');
+    const messages = buffer.split('\n\n');
     for (const msg of messages) {
       if (msg.trim()) {
         const event = this.parseSSEMessage(msg);
@@ -95,7 +84,7 @@ export class ChatService {
     if (!message) return null;
     let eventType = 'message';
     let eventData = '';
-    const lines = message.split('\\n');
+    const lines = message.split('\n');
     for (const line of lines) {
         if (line.startsWith('event:')) {
             eventType = line.substring(6).trim();
