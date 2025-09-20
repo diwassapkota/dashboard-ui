@@ -26,8 +26,15 @@ export class Register implements OnInit {
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
+      retypePassword: ['', [Validators.required]],
       role: ['ROLE_USER']
-    });
+    }, { validator: this.passwordMatchValidator });
+  }
+
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const retypePassword = form.get('retypePassword');
+    return password && retypePassword && password.value === retypePassword.value ? null : { passwordMismatch: true };
   }
 
   register(): void {
