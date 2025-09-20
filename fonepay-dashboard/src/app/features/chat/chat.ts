@@ -90,6 +90,7 @@ export class Chat implements OnInit, AfterViewChecked {
 
       this.chatService.sendMessage(payload).subscribe({
         next: (event: any) => {
+          console.log('Event received in component:', event);
           if (event.type === 'conversationId') {
             this.selectedConversation.id = event.data;
           } else if (event.type === 'message') {

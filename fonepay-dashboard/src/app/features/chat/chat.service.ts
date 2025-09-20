@@ -57,11 +57,17 @@ export class ChatService {
               observer.complete();
               return;
             }
-            buffer += decoder.decode(value, { stream: true });
-            this.processBuffer(buffer, observer);
-            // The buffer might contain an incomplete message at the end.
-            // `processBuffer` will update the buffer with the remainder.
-            buffer = buffer.substring(buffer.lastIndexOf('\n\n') + 2);
+            const chunk = decoder.decode(value, { stream: true });
+            console.log('SSE Chunk Received:', chunk);
+            buffer += chunk;
+
+            let boundary = buffer.lastIndexOf('\\n\\n');
+            if (boundary !== -1) {
+              const completeMessages = buffer.substring(0, boundary);
+              this.processBuffer(completeMessages, observer);
+              buffer = buffer.substring(boundary + 2);
+            }
+
             read();
           });
         };
@@ -73,11 +79,12 @@ export class ChatService {
   }
 
   private processBuffer(buffer: string, observer: any) {
-    const messages = buffer.split('\n\n');
+    const messages = buffer.split('\\n\\n');
     for (const msg of messages) {
       if (msg.trim()) {
         const event = this.parseSSEMessage(msg);
         if (event) {
+          console.log('Parsed SSE Event:', event);
           observer.next(event);
         }
       }
@@ -88,12 +95,13 @@ export class ChatService {
     if (!message) return null;
     let eventType = 'message';
     let eventData = '';
-    const lines = message.split('\n');
+    const lines = message.split('\\n');
     for (const line of lines) {
         if (line.startsWith('event:')) {
             eventType = line.substring(6).trim();
         } else if (line.startsWith('data:')) {
-            eventData += line.substring(5).trim();
+            // Do not trim the data to preserve spaces
+            eventData += line.substring(5);
         }
     }
     if (eventData) {
