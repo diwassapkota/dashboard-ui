@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Layout } from './components/layout/layout';
 import { Header } from './components/header/header';
-import { LoadingSpinner } from './components/loading-spinner/loading-spinner';
-
 @NgModule({
   declarations: [
     Layout,
@@ -12,13 +10,11 @@ import { LoadingSpinner } from './components/loading-spinner/loading-spinner';
   ],
   imports: [
     CommonModule,
-    RouterModule,
-    LoadingSpinner
+    RouterModule
   ],
   exports: [
     Layout,
-    Header,
-    LoadingSpinner
+    Header
   ]
 })
 export class CoreModule { }

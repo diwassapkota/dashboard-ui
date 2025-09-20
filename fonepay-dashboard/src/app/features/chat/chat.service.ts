@@ -48,36 +48,57 @@ export class ChatService {
         const decoder = new TextDecoder();
         let buffer = '';
 
-        function read() {
+        const read = () => {
           reader?.read().then(({ done, value }) => {
             if (done) {
+              if (buffer) {
+                this.processBuffer(buffer, observer);
+              }
               observer.complete();
               return;
             }
             buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\\n');
-            buffer = lines.pop() || '';
-
-            for (const line of lines) {
-              if (line.startsWith('event:')) {
-                const eventType = line.substring(6).trim();
-                const dataLine = lines.find(l => l.startsWith('data:'));
-                if (dataLine) {
-                  const data = dataLine.substring(5).trim();
-                  observer.next({ type: eventType, data: data });
-                }
-              } else if (line.startsWith('data:')) {
-                const data = line.substring(5).trim();
-                observer.next({ type: 'message', data: data });
-              }
-            }
+            this.processBuffer(buffer, observer);
+            // The buffer might contain an incomplete message at the end.
+            // `processBuffer` will update the buffer with the remainder.
+            buffer = buffer.substring(buffer.lastIndexOf('\n\n') + 2);
             read();
           });
-        }
+        };
         read();
       }).catch(err => {
         observer.error(err);
       });
     });
+  }
+
+  private processBuffer(buffer: string, observer: any) {
+    const messages = buffer.split('\n\n');
+    for (const msg of messages) {
+      if (msg.trim()) {
+        const event = this.parseSSEMessage(msg);
+        if (event) {
+          observer.next(event);
+        }
+      }
+    }
+  }
+
+  private parseSSEMessage(message: string): { type: string, data: any } | null {
+    if (!message) return null;
+    let eventType = 'message';
+    let eventData = '';
+    const lines = message.split('\n');
+    for (const line of lines) {
+        if (line.startsWith('event:')) {
+            eventType = line.substring(6).trim();
+        } else if (line.startsWith('data:')) {
+            eventData += line.substring(5).trim();
+        }
+    }
+    if (eventData) {
+        return { type: eventType, data: eventData };
+    }
+    return null;
   }
 }

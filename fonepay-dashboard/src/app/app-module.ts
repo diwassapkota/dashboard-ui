@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth-module';
 import { FeaturesModule } from './features/features-module';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { LoadingSpinner } from './core/components/loading-spinner/loading-spinner';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     AppRoutingModule,
     CoreModule,
     AuthModule,
-    FeaturesModule
+    FeaturesModule,
+    LoadingSpinner
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
