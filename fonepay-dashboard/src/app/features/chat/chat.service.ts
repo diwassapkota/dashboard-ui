@@ -1,54 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../core/api.service';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  constructor(
-    private apiService: ApiService,
-    private authService: AuthService
-  ) { }
+  constructor(private http: HttpClient) { }
 
   getConversations(): Observable<any> {
-    return this.apiService.get('/chat/history');
+    return this.http.get(`${environment.apiUrl}/chat/history`);
   }
 
   getConversationHistory(conversationId: number): Observable<any> {
-    return this.apiService.get(`/chat/history/${conversationId}`);
+    return this.http.get(`${environment.apiUrl}/chat/history/${conversationId}`);
   }
 
   sendMessage(message: any): Observable<any> {
     return new Observable(observer => {
-      const token = this.authService.getToken();
-      fetch(`${environment.apiUrl}/chat/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(message)
-      }).then(response => {
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
+      const req = this.http.post(`${environment.apiUrl}/chat/send`, message, {
+        responseType: 'text',
+        reportProgress: true,
+        observe: 'events'
+      });
 
-        const read = () => {
-          reader?.read().then(({ done, value }) => {
-            if (done) {
-              if (buffer) {
-                this.processBuffer(buffer, observer);
-              }
-              observer.complete();
-              return;
-            }
-            const chunk = decoder.decode(value, { stream: true });
+      let buffer = '';
+      const sub = req.subscribe({
+        next: event => {
+          if (event.type === HttpEventType.DownloadProgress) {
+            const chunk = (event.partialText || '').substring(buffer.length);
+            buffer = event.partialText || '';
             console.log('SSE Chunk Received:', chunk);
-            buffer += chunk;
 
             let boundary = buffer.lastIndexOf('\n\n');
             if (boundary !== -1) {
@@ -56,14 +40,27 @@ export class ChatService {
               this.processBuffer(completeMessages, observer);
               buffer = buffer.substring(boundary + 2);
             }
-
-            read();
-          });
-        };
-        read();
-      }).catch(err => {
-        observer.error(err);
+          } else if (event.type === HttpEventType.Response) {
+            if (buffer) {
+              this.processBuffer(buffer, observer);
+            }
+            observer.complete();
+          }
+        },
+        error: err => {
+          observer.error(err);
+        },
+        complete: () => {
+          if (buffer) {
+            this.processBuffer(buffer, observer);
+          }
+          observer.complete();
+        }
       });
+
+      return () => {
+        sub.unsubscribe();
+      };
     });
   }
 
@@ -86,15 +83,14 @@ export class ChatService {
     let eventData = '';
     const lines = message.split('\n');
     for (const line of lines) {
-        if (line.startsWith('event:')) {
-            eventType = line.substring(6).trim();
-        } else if (line.startsWith('data:')) {
-            // Do not trim the data to preserve spaces
-            eventData += line.substring(5);
-        }
+      if (line.startsWith('event:')) {
+        eventType = line.substring(6).trim();
+      } else if (line.startsWith('data:')) {
+        eventData += line.substring(5);
+      }
     }
     if (eventData) {
-        return { type: eventType, data: eventData };
+      return { type: eventType, data: eventData };
     }
     return null;
   }

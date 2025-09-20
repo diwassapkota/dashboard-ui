@@ -1,10 +1,17 @@
 <div class="flex h-screen">
   <!-- Sidebar -->
-  <div class="w-1/4 bg-[#fcf8f8] p-4 overflow-y-auto border-r border-gray-200">
-    <h2 class="text-xl font-bold mb-4 text-[#1c0d0e]">Conversations</h2>
-    <ul>
-      <li *ngFor="let conv of conversations" (click)="selectConversation(conv)" class="p-2 hover:bg-[#f3e7e8] cursor-pointer rounded text-[#1c0d0e]">
-        {{ conv.title || 'Conversation ' + conv.id }}
+  <div class="w-1/4 bg-[#fcf8f8] p-4 overflow-y-auto border-r border-gray-200 flex flex-col">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-[#1c0d0e]">Conversations</h2>
+        <button (click)="startNewConversation()" class="p-2 rounded-full hover:bg-[#f3e7e8]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            </svg>
+        </button>
+    </div>
+    <ul class="flex-1">
+      <li *ngFor="let conv of conversations" (click)="selectConversation(conv)" class="p-2 hover:bg-[#f3e7e8] cursor-pointer rounded text-[#1c0d0e] truncate">
+        {{ conv.title || 'New Chat' }}
       </li>
     </ul>
   </div>

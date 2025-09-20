@@ -34,4 +34,16 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
 }

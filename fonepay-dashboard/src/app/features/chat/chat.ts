@@ -15,7 +15,7 @@ export class Chat implements OnInit, AfterViewChecked {
   selectedConversation: any = null;
   messages: any[] = [];
   newMessage: string = '';
-  currentUserId: number = 1; // This should be fetched from auth service
+  currentUserId: number | null = null;
 
   constructor(
     private chatService: ChatService,
@@ -23,14 +23,11 @@ export class Chat implements OnInit, AfterViewChecked {
     ) { }
 
   ngOnInit(): void {
+    const decodedToken = this.authService.getDecodedToken();
+    if (decodedToken) {
+      this.currentUserId = decodedToken.userId;
+    }
     this.loadConversations();
-    // Assuming the user id can be decoded from the token.
-    // This is a placeholder for demonstration.
-    // const token = this.authService.getToken();
-    // if (token) {
-    //   const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    //   this.currentUserId = decodedToken.userId;
-    // }
   }
 
   ngAfterViewChecked() {
@@ -43,27 +40,39 @@ export class Chat implements OnInit, AfterViewChecked {
         this.conversations = data;
         if (data.length > 0) {
           this.selectConversation(data[0]);
+        } else {
+          this.startNewConversation();
         }
       },
       error: (err) => {
         console.error('Failed to load conversations', err);
+        this.startNewConversation();
       }
     });
   }
 
   selectConversation(conversation: any): void {
-    this.selectedConversation = conversation;
-    this.chatService.getConversationHistory(conversation.id).subscribe({
-      next: (data) => {
-        this.messages = data.map((m: any) => ({
-          ...m,
-          sender: m.userId === this.currentUserId ? 'You' : 'AI'
-        }));
-      },
-      error: (err) => {
-        console.error('Failed to load messages', err);
-      }
-    });
+    if (conversation.id) {
+        this.selectedConversation = conversation;
+        this.chatService.getConversationHistory(conversation.id).subscribe({
+        next: (data) => {
+            this.messages = data.map((m: any) => ({
+            ...m,
+            sender: m.userId === this.currentUserId ? 'You' : 'AI'
+            }));
+        },
+        error: (err) => {
+            console.error('Failed to load messages', err);
+        }
+        });
+    } else {
+        this.startNewConversation();
+    }
+  }
+
+  startNewConversation(): void {
+    this.selectedConversation = { id: null, title: 'New Chat' };
+    this.messages = [];
   }
 
   sendMessage(): void {
@@ -84,15 +93,20 @@ export class Chat implements OnInit, AfterViewChecked {
       this.messages.push(aiMessage);
 
       const payload = {
-        conversationId: this.selectedConversation.id,
+        conversationId: this.selectedConversation?.id,
         message: userMessage.message
       };
+
+      let isNewConversation = !this.selectedConversation?.id;
 
       this.chatService.sendMessage(payload).subscribe({
         next: (event: any) => {
           console.log('Event received in component:', event);
           if (event.type === 'conversationId') {
             this.selectedConversation.id = event.data;
+            if (isNewConversation) {
+                this.loadConversations(); // Refresh conversation list
+            }
           } else if (event.type === 'message') {
             aiMessage.message += event.data + ' ';
           }
