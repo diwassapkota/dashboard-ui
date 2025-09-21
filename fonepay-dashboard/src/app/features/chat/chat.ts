@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { ChatService } from './chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -16,10 +14,7 @@ export class Chat implements OnInit, AfterViewChecked {
   messages: any[] = [];
   newMessage: string = '';
 
-  // Placeholder for token. In a real app, this would come from a service.
-  private token: string = 'your_jwt_token_here';
-
-  constructor(private http: HttpClient) { }
+  constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
     this.loadConversations();
@@ -29,10 +24,8 @@ export class Chat implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  // --- Data Fetching ---
-
   loadConversations(): void {
-    this.getConversations().subscribe({
+    this.chatService.getConversations().subscribe({
       next: (data) => {
         this.conversations = data;
         if (data.length > 0) {
@@ -51,7 +44,7 @@ export class Chat implements OnInit, AfterViewChecked {
   selectConversation(conversation: any): void {
     if (conversation && conversation.id) {
         this.selectedConversation = conversation;
-        this.getConversationHistory(conversation.id).subscribe({
+        this.chatService.getConversationHistory(conversation.id).subscribe({
         next: (data) => {
             this.messages = data.map((m: any) => ({
               ...m,
@@ -72,115 +65,52 @@ export class Chat implements OnInit, AfterViewChecked {
     this.messages = [];
   }
 
-  // --- API Calls ---
-
-  getConversations(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/chat/history`, { headers: { 'Authorization': `Bearer ${this.token}` } });
-  }
-
-  getConversationHistory(conversationId: number): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/chat/history/${conversationId}`, { headers: { 'Authorization': `Bearer ${this.token}` } });
-  }
-
   sendMessage(): void {
-    if (this.newMessage.trim() === '') return;
+    if (this.newMessage.trim()) {
+      const userMessage = {
+        sender: 'You',
+        message: this.newMessage
+      };
+      this.messages.push(userMessage);
 
-    const userMessage = { sender: 'You', message: this.newMessage };
-    this.messages.push(userMessage);
+      const tempNewMessage = this.newMessage;
+      this.newMessage = '';
 
-    const tempNewMessage = this.newMessage;
-    this.newMessage = '';
+      const aiMessage = {
+        sender: 'AI',
+        message: ''
+      };
+      this.messages.push(aiMessage);
 
-    const aiMessage = { sender: 'AI', message: '' };
-    this.messages.push(aiMessage);
+      const payload = {
+        conversationId: this.selectedConversation?.id,
+        message: tempNewMessage
+      };
 
-    const payload = {
-      conversationId: this.selectedConversation?.id,
-      message: tempNewMessage
-    };
+      let isNewConversation = !this.selectedConversation?.id;
 
-    let isNewConversation = !this.selectedConversation?.id;
-
-    this.performSsePost(payload).subscribe({
-      next: (event: any) => {
-        if (event.type === 'conversationId') {
-          this.selectedConversation.id = event.data;
-          if (isNewConversation) this.loadConversations();
-        } else if (event.type === 'message') {
-          aiMessage.message += event.data;
-        }
-      },
-      error: (err) => {
-        console.error('Failed to send message', err);
-        aiMessage.message = 'Error: Could not get response.';
-      },
-      complete: () => {
-        if (isNewConversation) this.loadConversations();
-      }
-    });
-  }
-
-  performSsePost(body: any): Observable<any> {
-    return new Observable(observer => {
-      const url = `${environment.apiUrl}/chat/send`;
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.token}`
+      this.chatService.sendMessage(payload).subscribe({
+        next: (event: any) => {
+          if (event.type === 'conversationId') {
+            this.selectedConversation.id = event.data;
+            if (isNewConversation) {
+                this.loadConversations();
+            }
+          } else if (event.type === 'message') {
+            aiMessage.message += event.data + ' ';
+          }
         },
-        body: JSON.stringify(body)
-      }).then(response => {
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
-
-        const read = () => {
-          reader?.read().then(({ done, value }) => {
-            if (done) {
-              if (buffer) this.processBuffer(buffer, observer);
-              observer.complete();
-              return;
+        error: (err) => {
+          console.error('Failed to send message', err);
+          aiMessage.message = 'Error: Could not get response.';
+        },
+        complete: () => {
+            if (isNewConversation) {
+                this.loadConversations();
             }
-            buffer += decoder.decode(value, { stream: true });
-            let boundary = buffer.lastIndexOf('\n\n');
-            if (boundary !== -1) {
-              const completeMessages = buffer.substring(0, boundary);
-              this.processBuffer(completeMessages, observer);
-              buffer = buffer.substring(boundary + 2);
-            }
-            read();
-          });
-        };
-        read();
-      }).catch(err => observer.error(err));
-    });
-  }
-
-  private processBuffer(buffer: string, observer: any) {
-    const messages = buffer.split('\n\n');
-    for (const msg of messages) {
-      if (msg.trim()) {
-        const event = this.parseSSEMessage(msg);
-        if (event) observer.next(event);
-      }
+        }
+      });
     }
-  }
-
-  private parseSSEMessage(message: string): { type: string, data: any } | null {
-    if (!message) return null;
-    let eventType = 'message';
-    let eventData = '';
-    const lines = message.split('\n');
-    for (const line of lines) {
-      if (line.startsWith('event:')) {
-        eventType = line.substring(6).trim();
-      } else if (line.startsWith('data:')) {
-        eventData += line.substring(5);
-      }
-    }
-    if (eventData) return { type: eventType, data: eventData };
-    return null;
   }
 
   scrollToBottom(): void {

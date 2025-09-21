@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+/* Additional styles to ensure the layout works correctly */
+.flex.h-screen {
+  height: calc(100vh - 64px); /* Adjust based on header height */
+}
+
+.w-3\/4.flex.flex-col {
+  height: 100%;
+}
