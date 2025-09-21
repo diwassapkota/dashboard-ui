@@ -6,13 +6,14 @@ import { Reports } from './features/reports/reports';
 import { Chat } from './features/chat/chat';
 import { Query } from './features/query/query';
 import { Settings } from './features/settings/settings';
-import { Login } from './auth/login/login';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: Login },
+  { path: 'auth', loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) },
   {
     path: 'app',
     component: Layout,
+    canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', component: Dashboard },
       { path: 'reports', component: Reports },
@@ -22,8 +23,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' }
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/auth/login' }
 ];
 
 @NgModule({

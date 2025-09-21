@@ -1,59 +1,103 @@
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <div class="w-1/4 bg-[#fcf8f8] p-4 overflow-y-auto border-r border-gray-200 flex flex-col">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold text-[#1c0d0e]">Conversations</h2>
-        <button (click)="startNewConversation()" class="p-2 rounded-full hover:bg-[#f3e7e8]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-            </svg>
-        </button>
+<div class="gap-1 px-6 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col w-80">
+        <h2 class="text-[#1c0d0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Chats</h2>
+        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-[72px] py-2">
+            <div
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpJybyVnrFjCxLBbEfm57lDpZ1ZHCSb8libIWr5hoocMr_4OTd9dp6TTnCX_DUUjL4kSbhbnyz2aguFHz64HdtoXQ8ONAwDc5LprdVpio4PuPjIKFfdwhT71zdA3sqxD86lVNef25fK2EAw4xGzbYanJOfHVIAKiqKRbaBDgP2o9x-A9L-CsRyu3oVQYXZ7jcC5jVhe6AsT40EiaZ44a73qs7nXzQ5YDKO5YOuPWL6Pr4sW-kHnl6Adb4BUE23Guz8bh3ksXr8oSfg");'
+            ></div>
+            <div class="flex flex-col justify-center">
+                <p class="text-[#1c0d0e] text-base font-medium leading-normal line-clamp-1">Customer Support</p>
+                <p class="text-[#9c494e] text-sm font-normal leading-normal line-clamp-2">Last message: 2 days ago</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-[72px] py-2">
+            <div
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDKJyZyviC_yWLL-wif_8tQ1Pi5us5_B1WB8x9OUmh1TPevAlibooXIP5I4N_k51DilGPGWwW827mySWUqrKMERg0rttGWnEAw7sJ1JTJZZU0Koe-ih6_14CC10kkEtCPBsK4nyTTIZn18oQXQFACLdHEorvDffEl4oC16tZ_1PuKZnp3EpwtXQJ1Z2gkIOPVluvU9PRaMiFy0FG847oRDmuX-g2kKzyAuoKXhyita3P9dy0SUK91Y6ggNnCze4PjjpAE4SbG0Frzbv");'
+            ></div>
+            <div class="flex flex-col justify-center">
+                <p class="text-[#1c0d0e] text-base font-medium leading-normal line-clamp-1">Technical Issues</p>
+                <p class="text-[#9c494e] text-sm font-normal leading-normal line-clamp-2">Last message: 1 week ago</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-[72px] py-2">
+            <div
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDFnwmxT_sIkxYzy17oFTak29soQ98pASdralwAr0Ckgl7YXDpJ8BdLoA9MSwxbIWy2zCSGoV9mdFeoRt4isPzt4Vjpsz2iDmiPddI4CXtvJngJb8WmuxMLvj-OQr0YrM_N-9R0drBi0s9M4I3V_J3gwyZtkJ-9fnKFaBS9PYLQbu5rR31SQjQLyBr2SyDV632-fcFgnoUr2WYm-sK7XqpPbrxvHiqc--mEk3hVE7T9L5CmhCVKBRTN6xELsexxped3YeyjiflKEdO1");'
+            ></div>
+            <div class="flex flex-col justify-center">
+                <p class="text-[#1c0d0e] text-base font-medium leading-normal line-clamp-1">Billing Inquiries</p>
+                <p class="text-[#9c494e] text-sm font-normal leading-normal line-clamp-2">Last message: 2 weeks ago</p>
+            </div>
+        </div>
     </div>
-    <ul class="flex-1">
-      <li *ngFor="let conv of conversations" (click)="selectConversation(conv)" class="p-2 hover:bg-[#f3e7e8] cursor-pointer rounded text-[#1c0d0e] truncate">
-        {{ conv.title || 'New Chat' }}
-      </li>
-    </ul>
-  </div>
-
-  <!-- Main Chat Area -->
-  <div class="w-3/4 flex flex-col">
-    <!-- Message Display Area -->
-    <div #scrollMe class="flex-1 overflow-y-auto p-6">
-        <div *ngFor="let message of messages" class="flex items-end gap-3 p-4" [ngClass]="{'justify-end': message.sender === 'You'}">
-            <div *ngIf="message.sender !== 'You'"
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <h2 class="text-[#1c0d0e] tracking-light text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-5">Customer Support</h2>
+        <div class="flex items-end gap-3 p-4">
+            <div
                     class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVCtYfscsJ51BBoWLYKQ8LnhrUhOf8MZHz0cEkeZ-9LHqfFzIhT6yMX6tXVof6hieChvUTQyLyu-k9p22upERdfzq7GEvTFM34TFvFCpfzxWD3mEYjfoNxTrqRwlpxaSaTu6HkqjYwZm9gQZOMmZqT8zJ5hjipqZ9ijwOJM_4IUqxE02t2N5d9ArEoPb1XzZf3tk6dtX2Enuj9CLXthZXlYREL6mD2pgwZbDIAMTM7B_-aLYBHhA3dy1MDQr4le33TdPV8Nqp2F5hq");'
             ></div>
-            <div class="flex flex-1 flex-col gap-1" [ngClass]="{'items-end': message.sender === 'You', 'items-start': message.sender !== 'You'}">
-                <p class="text-[#9c494e] text-[13px] font-normal leading-normal max-w-[360px]">{{ message.sender }}</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3" [ngClass]="{'bg-[#df0c17] text-[#fcf8f8]': message.sender === 'You', 'bg-[#f4e7e7] text-[#1c0d0e]': message.sender !== 'You'}">
-                    {{ message.message }}
+            <div class="flex flex-1 flex-col gap-1 items-start">
+                <p class="text-[#9c494e] text-[13px] font-normal leading-normal max-w-[360px]">Support Agent</p>
+                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#f4e7e7] text-[#1c0d0e]">Hello, how can I assist you today?</p>
+            </div>
+        </div>
+        <div class="flex items-end gap-3 p-4 justify-end">
+            <div class="flex flex-1 flex-col gap-1 items-end">
+                <p class="text-[#9c494e] text-[13px] font-normal leading-normal max-w-[360px] text-right">You</p>
+                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#df0c17] text-[#fcf8f8]">
+                    I'm having trouble with a recent transaction.
                 </p>
             </div>
-            <div *ngIf="message.sender === 'You'"
+            <div
                     class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCgoWHFuWWDi38q_AhNCnEEWVkwheK6L0I2Gmq5z5-5Uj5rKsCzYiLYXw3eV_p0wNzJtvEo2Cup5GdoFJ9-KkkVJW4C8tkHVzHvlmED_z4KzxqLabYd8qyhr7dJzyzTPNn95v7m4SdOrz2qBEyWDNvyJQRFksFao0IyX1ctsQoMJfqU1fbas0tpCu1jzfOXhNG1w7rxzcaJBKE59O1iyPK_88ubOaGWFRcRk9hjq2oe41YXdv1MMbQa4Sm_Yvjv8qZvR8EFRgk1fRjm");'
             ></div>
         </div>
-    </div>
-
-    <!-- Message Input Area -->
-    <div class="p-4 bg-white border-t border-gray-200">
-        <div class="flex items-center gap-3">
-            <input
-                    [(ngModel)]="newMessage"
-                    (keyup.enter)="sendMessage()"
-                    placeholder="Type your message..."
-                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1c0d0e] focus:outline-0 focus:ring-0 border border-gray-300 bg-gray-50 h-12 placeholder:text-[#9c494e] px-4 text-base font-normal leading-normal"
-            />
-            <button
-                    (click)="sendMessage()"
-                    class="min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#df0c17] text-[#fcf8f8] text-sm font-bold leading-normal"
-            >
-                <span class="truncate">Send</span>
-            </button>
+        <div class="flex items-end gap-3 p-4">
+            <div
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARwm9jPHx8vPOsAQ4T_xFvDU2pJGtErGtwZfQbABkdtwB75cFEktr2DJ3rqI5l9I75DbV6vAwR5xb995EImKDeGcB3EK_ItG38C7BXzy5TxHGQ7WRAJTt8COhfzsqNlqpsYH8WKeWKlFdsT4cTmvvTeb2tAEwGb5IkEmT6qFJ7Hz_icoe-tux-NgtZjjEvjERhWkQHYtpNYeM2mJmnT6tUTWexbnSuqhv2xunQTS3RBX4S6JzZsKwYoS-gzuoNIPowmSnTLqJ84zE0");'
+            ></div>
+            <div class="flex flex-1 flex-col gap-1 items-start">
+                <p class="text-[#9c494e] text-[13px] font-normal leading-normal max-w-[360px]">Support Agent</p>
+                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#f4e7e7] text-[#1c0d0e]">
+                    Could you please provide the transaction ID or any relevant details?
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center px-4 py-3 gap-3 @container">
+            <label class="flex flex-col min-w-40 h-12 flex-1">
+                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                    <input
+                            placeholder="Type your message..."
+                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1c0d0e] focus:outline-0 focus:ring-0 border-none bg-[#f4e7e7] focus:border-none h-full placeholder:text-[#9c494e] px-4 rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
+                            value=""
+                    />
+                    <div class="flex border-none bg-[#f4e7e7] items-center justify-center pr-4 rounded-r-lg border-l-0 !pr-2">
+                        <div class="flex items-center gap-4 justify-end">
+                            <div class="flex items-center gap-1">
+                                <button class="flex items-center justify-center p-1.5">
+                                    <div class="text-[#9c494e]" data-icon="Image" data-size="20px" data-weight="regular">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                            <path
+                                                    d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"
+                                            ></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </div>
+                            <button
+                                    class="min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#df0c17] text-[#fcf8f8] text-sm font-medium leading-normal hidden @[480px]:block"
+                            >
+                                <span class="truncate">Send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </label>
         </div>
     </div>
-  </div>
 </div>

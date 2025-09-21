@@ -1,69 +1,29 @@
 <div class="gap-1 px-6 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col w-80">
-        <h2 class="text-[#1c0d0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Saved Reports</h2>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">All Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Failed Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Successful Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Refunded Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Disputed Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Chargeback Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Pending Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Cancelled Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Expired Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Authorized Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Settled Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Voided Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Declined Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Reversed Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Refunded Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Captured Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Voided Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Settled Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Authorized Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Declined Transactions</p>
-        </div>
-        <div class="flex items-center gap-4 bg-[#fcf8f8] px-4 min-h-14">
-            <p class="text-[#1c0d0e] text-base font-normal leading-normal flex-1 truncate">Partially Reversed Transactions</p>
-        </div>
+        <h2 class="text-[#1c0d0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Create Report</h2>
+        <form [formGroup]="reportForm" (ngSubmit)="createReport()" class="space-y-4 p-4">
+            <label class="flex flex-col">
+                <span class="text-[#1c0d0e] text-sm font-medium">Title</span>
+                <input
+                        formControlName="title"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1c0d0e] focus:outline-0 focus:ring-0 border border-[#e8ced0] bg-[#fcf8f8] focus:border-[#e8ced0] h-10 placeholder:text-[#9c494e] p-[15px] text-base font-normal leading-normal"
+                />
+            </label>
+            <label class="flex flex-col">
+                <span class="text-[#1c0d0e] text-sm font-medium">Type</span>
+                <input
+                        formControlName="type"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1c0d0e] focus:outline-0 focus:ring-0 border border-[#e8ced0] bg-[#fcf8f8] focus:border-[#e8ced0] h-10 placeholder:text-[#9c494e] p-[15px] text-base font-normal leading-normal"
+                />
+            </label>
+            <button
+                    type="submit"
+                    [disabled]="reportForm.invalid"
+                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#df0c17] text-[#fcf8f8] text-sm font-bold leading-normal tracking-[0.015em]"
+            >
+                <span class="truncate">Create</span>
+            </button>
+        </form>
     </div>
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
         <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#1c0d0e] tracking-light text-[32px] font-bold leading-tight min-w-72">All Transactions</p></div>
@@ -141,260 +101,24 @@
                 <table class="flex-1">
                     <thead>
                     <tr class="bg-[#fcf8f8]">
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">
-                            Transaction ID
-                        </th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">Date</th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 px-4 py-3 text-left text-[#1c0d0e] w-60 text-sm font-medium leading-normal">Status</th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">Amount</th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">
-                            Currency
-                        </th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">
-                            Customer
-                        </th>
-                        <th class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 px-4 py-3 text-left text-[#1c0d0e] w-[400px] text-sm font-medium leading-normal">
-                            Payment Method
-                        </th>
+                        <th class="px-4 py-3 text-left text-[#1c0d0e] text-sm font-medium leading-normal">Title</th>
+                        <th class="px-4 py-3 text-left text-[#1c0d0e] text-sm font-medium leading-normal">Type</th>
+                        <th class="px-4 py-3 text-left text-[#1c0d0e] text-sm font-medium leading-normal">Created At</th>
+                        <th class="px-4 py-3 text-left text-[#1c0d0e] text-sm font-medium leading-normal">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN123456
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-15
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Completed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">150.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">USD</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Olivia Carter
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Credit Card
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN789012
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-16
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Pending</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">75.50</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">EUR</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Ethan Walker
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">PayPal</td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN345678
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-17
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Failed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">200.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">GBP</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Owen Bennett
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Bank Transfer
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN901234
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-18
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Completed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">100.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">USD</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Chloe Hughes
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Credit Card
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN567890
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-19
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Refunded</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">50.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">EUR</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Henry Reed
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">PayPal</td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN234567
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-20
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Completed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">120.75</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">GBP</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Grace Morgan
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Bank Transfer
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN890123
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-21
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Pending</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">80.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">USD</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Leo Hayes
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Credit Card
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN456789
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-22
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Failed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">180.20</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">EUR</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Lily Foster
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">PayPal</td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN012345
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-23
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Completed</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">90.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">GBP</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Caleb Cole
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Bank Transfer
-                        </td>
-                    </tr>
-                    <tr class="border-t border-t-[#e8ced0]">
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            TXN678901
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            2024-01-24
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                            <button
-                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f4e7e7] text-[#1c0d0e] text-sm font-medium leading-normal w-full"
-                            >
-                                <span class="truncate">Refunded</span>
-                            </button>
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">60.00</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">USD</td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Scarlett West
-                        </td>
-                        <td class="table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840 h-[72px] px-4 py-2 w-[400px] text-[#9c494e] text-sm font-normal leading-normal">
-                            Credit Card
+                    <tr *ngFor="let report of reports" class="border-t border-t-[#e8ced0]">
+                        <td class="h-[72px] px-4 py-2 text-[#9c494e] text-sm font-normal leading-normal">{{ report.title }}</td>
+                        <td class="h-[72px] px-4 py-2 text-[#9c494e] text-sm font-normal leading-normal">{{ report.type }}</td>
+                        <td class="h-[72px] px-4 py-2 text-[#9c494e] text-sm font-normal leading-normal">{{ report.createdAt | date: 'medium' }}</td>
+                        <td class="h-[72px] px-4 py-2 text-[#9c494e] text-sm font-normal leading-normal">
+                            <button (click)="deleteReport(report.id)" class="text-red-500">Delete</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <style>
-                @container(max-width:120px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-120{display: none;}}
-              @container(max-width:240px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-240{display: none;}}
-              @container(max-width:360px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-360{display: none;}}
-              @container(max-width:480px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-480{display: none;}}
-              @container(max-width:600px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-600{display: none;}}
-              @container(max-width:720px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-720{display: none;}}
-              @container(max-width:840px){.table-7e7f6f3b-6d68-4265-9e31-0b3eb0895d1e-column-840{display: none;}}
-            </style>
         </div>
     </div>
 </div>

@@ -19,8 +19,7 @@ import { Settings } from './settings/settings';
   ],
   imports: [
     CommonModule,
-    FeaturesRoutingModule,
-    FormsModule
+    FeaturesRoutingModule
   ]
 })
 export class FeaturesModule { }

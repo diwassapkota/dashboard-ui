@@ -4,6 +4,7 @@
             <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
                 <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
                     <h2 class="text-[#1b0e0e] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Welcome to Fonepay</h2>
+                    <div *ngIf="error" class="text-red-500 text-sm mt-1 text-center">{{ error }}</div>
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <input
@@ -36,7 +37,7 @@
                             </div>
                         </label>
                     </div>
-                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">Forgot Password?</p>
+                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline"><a routerLink="/auth/forgot-password">Forgot Password?</a></p>
                     <div class="flex px-4 py-3">
                         <button
                                 type="submit"
@@ -47,7 +48,7 @@
                         </button>
                     </div>
 
-                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline">Don't have an account? Sign up</p>
+                    <p class="text-[#994d51] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline"><a routerLink="/auth/register">Don't have an account? Sign up</a></p>
                 </div>
             </form>
         </div>
