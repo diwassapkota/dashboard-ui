@@ -19,8 +19,12 @@ export class ChatService {
   }
 
   sendMessage(message: any): Observable<any> {
+    const url = `${environment.apiUrl}/chat/send`;
+    console.log('Sending POST request to:', url);
+    console.log('Request body:', message);
+
     return new Observable(observer => {
-      const req = this.http.post(`${environment.apiUrl}/chat/send`, message, {
+      const req = this.http.post(url, message, {
         responseType: 'text',
         reportProgress: true,
         observe: 'events'
