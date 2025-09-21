@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -20,8 +20,6 @@ export class ChatService {
 
   sendMessage(message: any): Observable<any> {
     const url = `${environment.apiUrl}/chat/send`;
-    console.log('Sending POST request to:', url);
-    console.log('Request body:', message);
 
     return new Observable(observer => {
       const req = this.http.post(url, message, {
@@ -36,7 +34,6 @@ export class ChatService {
           if (event.type === HttpEventType.DownloadProgress) {
             const chunk = (event.partialText || '').substring(buffer.length);
             buffer = event.partialText || '';
-            console.log('SSE Chunk Received:', chunk);
 
             let boundary = buffer.lastIndexOf('\n\n');
             if (boundary !== -1) {
@@ -74,7 +71,6 @@ export class ChatService {
       if (msg.trim()) {
         const event = this.parseSSEMessage(msg);
         if (event) {
-          console.log('Parsed SSE Event:', event);
           observer.next(event);
         }
       }

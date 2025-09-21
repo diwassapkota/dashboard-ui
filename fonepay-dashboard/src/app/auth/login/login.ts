@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +10,10 @@ import { AuthService } from '../auth.service';
 })
 export class Login implements OnInit {
   loginForm!: FormGroup;
-  error: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -28,16 +25,9 @@ export class Login implements OnInit {
 
   login(): void {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          this.authService.setToken(response.token);
-          this.router.navigate(['/app/dashboard']);
-        },
-        error: (err) => {
-          this.error = 'Invalid email or password';
-          console.error(err);
-        }
-      });
+      // For now, just navigate to the dashboard on successful login.
+      // In a real app, you would have authentication logic here.
+      this.router.navigate(['/app/dashboard']);
     }
   }
 }

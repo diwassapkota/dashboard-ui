@@ -4,9 +4,8 @@ import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-chat',
-  standalone: false,
   templateUrl: './chat.html',
-  styleUrl: './chat.scss'
+  styleUrls: ['./chat.scss']
 })
 export class Chat implements OnInit, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
@@ -52,20 +51,20 @@ export class Chat implements OnInit, AfterViewChecked {
   }
 
   selectConversation(conversation: any): void {
-    if (conversation.id) {
+    if (conversation && conversation.id) {
         this.selectedConversation = conversation;
         this.chatService.getConversationHistory(conversation.id).subscribe({
         next: (data) => {
             this.messages = data.map((m: any) => ({
             ...m,
-            sender: m.userId === this.currentUserId ? 'You' : 'AI'
+            sender: m.sender === 'USER' ? 'You' : 'AI'
             }));
         },
         error: (err) => {
-            console.error('Failed to load messages', err);
+            console.error('Failed to load messages for conversation ' + conversation.id, err);
         }
         });
-    } else {
+    } else if (conversation) {
         this.startNewConversation();
     }
   }
@@ -83,29 +82,29 @@ export class Chat implements OnInit, AfterViewChecked {
         userId: this.currentUserId
       };
       this.messages.push(userMessage);
+
+      const tempNewMessage = this.newMessage;
       this.newMessage = '';
 
       const aiMessage = {
         sender: 'AI',
-        message: '',
-        userId: 0 // AI user id
+        message: ''
       };
       this.messages.push(aiMessage);
 
       const payload = {
         conversationId: this.selectedConversation?.id,
-        message: userMessage.message
+        message: tempNewMessage
       };
 
       let isNewConversation = !this.selectedConversation?.id;
 
       this.chatService.sendMessage(payload).subscribe({
         next: (event: any) => {
-          console.log('Event received in component:', event);
           if (event.type === 'conversationId') {
             this.selectedConversation.id = event.data;
             if (isNewConversation) {
-                this.loadConversations(); // Refresh conversation list
+                this.loadConversations();
             }
           } else if (event.type === 'message') {
             aiMessage.message += event.data + ' ';
@@ -114,6 +113,11 @@ export class Chat implements OnInit, AfterViewChecked {
         error: (err) => {
           console.error('Failed to send message', err);
           aiMessage.message = 'Error: Could not get response.';
+        },
+        complete: () => {
+            if (isNewConversation) {
+                this.loadConversations();
+            }
         }
       });
     }
