@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.authService.getToken();
-    if (token) {
+    if (token && !request.url.includes('/auth/login') && !request.url.includes('/auth/register')) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
@@ -29,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this.authService.removeToken();
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         }
         return throwError(error);
       })

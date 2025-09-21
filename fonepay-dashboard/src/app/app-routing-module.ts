@@ -9,7 +9,7 @@ import { Settings } from './features/settings/settings';
 import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) },
+  { path: 'auth', loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) },
   {
     path: 'app',
     component: Layout,
@@ -23,7 +23,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-  { path: '**', redirectTo: '/login' }
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/auth/login' }
 ];
 
 @NgModule({
