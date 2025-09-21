@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing-module';
 import { Login } from './login/login';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Register } from './register/register';
-import { ForgotPassword } from './forgot-password/forgot-password';
 
 
 @NgModule({
@@ -15,9 +13,7 @@ import { ForgotPassword } from './forgot-password/forgot-password';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ReactiveFormsModule,
-    Register,
-    ForgotPassword
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }

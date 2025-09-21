@@ -1,24 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { DashboardService } from './dashboard.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: false,
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.scss']
+  styleUrl: './dashboard.scss'
 })
-export class Dashboard implements OnInit {
-  metrics: any = {};
+export class Dashboard {
 
-  constructor(private dashboardService: DashboardService) { }
-
-  ngOnInit(): void {
-    this.dashboardService.getMetrics().subscribe({
-      next: (data) => {
-        this.metrics = data;
-      },
-      error: (err) => {
-        console.error('Failed to get dashboard metrics', err);
-      }
-    });
-  }
 }

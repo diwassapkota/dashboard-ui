@@ -4,24 +4,28 @@
         <div class="flex flex-wrap gap-4 p-4">
             <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#e7d0d1]">
                 <p class="text-[#1b0e0e] text-base font-medium leading-normal">Total Transactions</p>
-                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">{{ metrics.totalTransactions | number }}</p>
+                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">1,234,567</p>
+                <p class="text-[#07885d] text-base font-medium leading-normal">+10%</p>
             </div>
             <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#e7d0d1]">
                 <p class="text-[#1b0e0e] text-base font-medium leading-normal">Successful Transactions</p>
-                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">{{ metrics.successfulTransactions | number }}</p>
+                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">1,200,000</p>
+                <p class="text-[#07885d] text-base font-medium leading-normal">+12%</p>
             </div>
             <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#e7d0d1]">
                 <p class="text-[#1b0e0e] text-base font-medium leading-normal">Failed Transactions</p>
-                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">{{ metrics.failedTransactions | number }}</p>
+                <p class="text-[#1b0e0e] tracking-light text-2xl font-bold leading-tight">34,567</p>
+                <p class="text-[#e75a08] text-base font-medium leading-normal">-8%</p>
             </div>
         </div>
         <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Transaction Overview</h2>
         <div class="flex flex-wrap gap-4 px-4 py-6">
             <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e7d0d1] p-6">
                 <p class="text-[#1b0e0e] text-base font-medium leading-normal">Transaction Volume Over Time</p>
-                <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight truncate">{{ metrics.transactionVolumeLast30Days | number }}</p>
+                <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight truncate">123,456</p>
                 <div class="flex gap-1">
                     <p class="text-[#994d51] text-base font-normal leading-normal">Last 30 Days</p>
+                    <p class="text-[#07885d] text-base font-medium leading-normal">+5%</p>
                 </div>
                 <div class="flex min-h-[180px] flex-1 flex-col gap-8 py-4">
                     <svg width="100%" height="148" viewBox="-3 0 478 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -55,9 +59,10 @@
             </div>
             <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e7d0d1] p-6">
                 <p class="text-[#1b0e0e] text-base font-medium leading-normal">Transaction Success Rate</p>
-                <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight truncate">{{ metrics.transactionSuccessRateLast30Days | percent }}</p>
+                <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight truncate">98%</p>
                 <div class="flex gap-1">
                     <p class="text-[#994d51] text-base font-normal leading-normal">Last 30 Days</p>
+                    <p class="text-[#07885d] text-base font-medium leading-normal">+2%</p>
                 </div>
                 <div class="grid min-h-[180px] grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center px-3">
                     <div class="border-[#994d51] bg-[#f3e7e8] border-t-2 w-full" style="height: 100%;"></div>
