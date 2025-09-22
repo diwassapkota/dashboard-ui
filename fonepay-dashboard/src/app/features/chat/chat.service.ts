@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+providedIn: 'root'
 })
 export class ChatService {
 
-  constructor(private http: HttpClient) { }
+constructor(private http: HttpClient) {}
 
   getConversations(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/chat/history`);
@@ -18,80 +18,74 @@ export class ChatService {
     return this.http.get(`${environment.apiUrl}/chat/history/${conversationId}`);
   }
 
-  sendMessage(message: any): Observable<any> {
+  // Fetch-based approach to preserve exact token spacing
+  sendMessage(payload: any): Observable<any> {
     return new Observable(observer => {
-      const req = this.http.post(`${environment.apiUrl}/chat/send`, message, {
-        responseType: 'text',
-        reportProgress: true,
-        observe: 'events'
-      });
+      const url = `${environment.apiUrl}/v1/llm/ollama?message=${encodeURIComponent(payload.message)}`;
 
-      let buffer = '';
-      const sub = req.subscribe({
-        next: event => {
-          if (event.type === HttpEventType.DownloadProgress) {
-            const chunk = (event.partialText || '').substring(buffer.length);
-            buffer = event.partialText || '';
-            console.log('SSE Chunk Received:', chunk);
-
-            let boundary = buffer.lastIndexOf('\n\n');
-            if (boundary !== -1) {
-              const completeMessages = buffer.substring(0, boundary);
-              this.processBuffer(completeMessages, observer);
-              buffer = buffer.substring(boundary + 2);
-            }
-          } else if (event.type === HttpEventType.Response) {
-            if (buffer) {
-              this.processBuffer(buffer, observer);
-            }
-            observer.complete();
-          }
-        },
-        error: err => {
-          observer.error(err);
-        },
-        complete: () => {
-          if (buffer) {
-            this.processBuffer(buffer, observer);
-          }
-          observer.complete();
+      fetch(url, {
+        method: 'GET'
+        // Remove custom headers to avoid CORS preflight
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const reader = response.body?.getReader();
+        if (!reader) {
+          throw new Error('ReadableStream not supported');
+        }
+
+        const decoder = new TextDecoder();
+
+        const readStream = () => {
+          reader!.read().then(({ done, value }) => {
+            if (done) {
+              console.log('Stream completed');
+              observer.complete();
+              return;
+            }
+
+            // Decode the chunk - this preserves exact spacing including leading spaces
+            const chunk = decoder.decode(value, { stream: true });
+            console.log('Received chunk:', JSON.stringify(chunk));
+
+            // Handle completion marker
+            if (chunk.includes('[DONE]')) {
+              console.log('Stream completed with DONE marker');
+              // Send any remaining content before the [DONE] marker
+              const contentBeforeDone = chunk.split('[DONE]')[0];
+              if (contentBeforeDone) {
+                observer.next({ type: 'message', data: contentBeforeDone });
+              }
+              observer.complete();
+              return;
+            }
+
+            // Send the chunk exactly as received (preserves spaces)
+            if (chunk) {
+              observer.next({ type: 'message', data: chunk });
+            }
+
+            readStream(); // Continue reading
+          }).catch(error => {
+            console.error('Stream reading error:', error);
+            observer.error(error);
+          });
+        };
+
+        readStream();
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        observer.error(error);
       });
 
+      // Cleanup function
       return () => {
-        sub.unsubscribe();
+        console.log('Streaming cancelled');
       };
     });
-  }
-
-  private processBuffer(buffer: string, observer: any) {
-    const messages = buffer.split('\n\n');
-    for (const msg of messages) {
-      if (msg.trim()) {
-        const event = this.parseSSEMessage(msg);
-        if (event) {
-          console.log('Parsed SSE Event:', event);
-          observer.next(event);
-        }
-      }
-    }
-  }
-
-  private parseSSEMessage(message: string): { type: string, data: any } | null {
-    if (!message) return null;
-    let eventType = 'message';
-    let eventData = '';
-    const lines = message.split('\n');
-    for (const line of lines) {
-      if (line.startsWith('event:')) {
-        eventType = line.substring(6).trim();
-      } else if (line.startsWith('data:')) {
-        eventData += line.substring(5);
-      }
-    }
-    if (eventData) {
-      return { type: eventType, data: eventData };
-    }
-    return null;
   }
 }
