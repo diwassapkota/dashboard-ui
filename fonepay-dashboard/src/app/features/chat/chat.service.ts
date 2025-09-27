@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
 providedIn: 'root'
 })
 export class ChatService {
 
-constructor(private http: HttpClient) {}
+constructor(private http: HttpClient, private authService: AuthService) {}
 
   getConversations(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/chat/history`);
@@ -21,11 +22,18 @@ constructor(private http: HttpClient) {}
   // Fetch-based approach to preserve exact token spacing
   sendMessage(payload: any): Observable<any> {
     return new Observable(observer => {
-      const url = `${environment.apiUrl}/v1/llm/ollama?message=${encodeURIComponent(payload.message)}`;
+      // const url = `${environment.apiUrl}/v1/llm/ollama?message=${encodeURIComponent(payload.message)}`;
+      const url = `${environment.apiUrl}/v1/llm/ollama`;
 
       fetch(url, {
-        method: 'GET'
+        method: 'POST',
         // Remove custom headers to avoid CORS preflight
+        headers: {
+          'Content-Type': 'application/json',
+          // If auth is needed:
+          'Authorization': `Bearer ${this.authService.getToken()}`,
+        },
+        body: JSON.stringify({ message: payload.message, conversationId: payload.conversationId })
       })
       .then(response => {
         if (!response.ok) {
