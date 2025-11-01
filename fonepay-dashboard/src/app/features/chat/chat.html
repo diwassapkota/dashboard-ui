@@ -27,7 +27,7 @@
             ></div>
             <div class="flex flex-1 flex-col gap-1" [ngClass]="{'items-end': message.sender === 'You', 'items-start': message.sender !== 'You'}">
                 <p class="text-[#9c494e] text-[13px] font-normal leading-normal max-w-[360px]">{{ message.sender }}</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3" [ngClass]="{'bg-[#df0c17] text-[#fcf8f8]': message.sender === 'You', 'bg-[#f4e7e7] text-[#1c0d0e]': message.sender !== 'You'}">
+                <p class="text-base font-normal leading-normal flex max-w-[600px] rounded-lg px-4 py-3" [ngClass]="{'bg-[#df0c17] text-[#fcf8f8]': message.sender === 'You', 'bg-[#f4e7e7] text-[#1c0d0e]': message.sender !== 'You'}">
                     {{ message.message }}
                 </p>
             </div>

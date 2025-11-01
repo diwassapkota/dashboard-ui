@@ -23,7 +23,7 @@ constructor(private http: HttpClient, private authService: AuthService) {}
   sendMessage(payload: any): Observable<any> {
     return new Observable(observer => {
       // const url = `${environment.apiUrl}/v1/llm/ollama?message=${encodeURIComponent(payload.message)}`;
-      const url = `${environment.apiUrl}/v1/llm/ollama`;
+      const url = `${environment.apiUrl}/chat/ollama`;
 
       fetch(url, {
         method: 'POST',
